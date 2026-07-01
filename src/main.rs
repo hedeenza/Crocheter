@@ -1,5 +1,5 @@
 use clap::Parser;
-use crocheter::{read_file_to_vec};
+use crocheter::{read_file_to_vec, partition_skipped_lines};
 use std::fs::File;
 use std::io::Write;
 
@@ -28,14 +28,8 @@ fn main() {
     // Createa a new vector to hold the Vec<Tuple>
     let mut all_paragraphs: Vec<Vec<String>> = Vec::new();
 
-    // Creata a new vector to hold the lines we want to skip formatting
-    let mut skipped_lines: Vec<String> = Vec::new();
-
-    // Push each skipped line to the vector
-    for line in &mut input_lines[0..args.skip_lines] {
-        skipped_lines.push(line.to_string());
-    }
-
+    let skipped_lines = partition_skipped_lines(input_lines.clone(), args.skip_lines);
+    
     // Set the initial Pointer 1 index to the beginning
     let mut pointer1_index = args.skip_lines;
 

@@ -21,3 +21,14 @@ pub fn read_file_to_vec(input_file: &String) -> Vec<String> {
     }
     input_lines
 }
+
+pub fn partition_skipped_lines(input_lines: Vec<String>, lines_skipped: usize) -> Vec<String> {
+    // Creata a new vector to hold the lines we want to skip formatting
+    let mut skipped_lines: Vec<String> = Vec::new();
+
+    // Push each skipped line to the vector
+    for line in &input_lines[0..lines_skipped] {
+        skipped_lines.push(line.to_string());
+    }
+    skipped_lines
+}
