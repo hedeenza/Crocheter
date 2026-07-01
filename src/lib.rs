@@ -84,3 +84,23 @@ pub fn paragraph_vectors_to_strings(all_paragraphs: Vec<Vec<String>>) -> Vec<Str
     }
     paragraph_strings
 }
+
+pub fn create_output_file(input_file: &String) -> File {
+    // Find the position of the period in the input file name, if there is one
+    let period_index = match input_file.find(".") {
+        Some(index) => index,
+        None => input_file.len(),
+    };
+    // The output name is everything up to the period index
+    let input_name = &input_file[..period_index];
+    // The output extension is everything after and including the period index
+    let input_extension = &input_file[period_index..];
+    // Format the output name to include the original file name
+    // and original extension if there was one
+    let output_name = format!("{}_publish{}", input_name, input_extension);
+    // Create the output file
+    let output_file =
+        File::create(output_name).expect("Failed to Create Output File");
+
+    output_file
+}
