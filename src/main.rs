@@ -53,7 +53,6 @@ fn main() {
                     // Push each line between Pointer 1 and Pointer 2 to a Vector
                     for line in &mut input_lines[pointer1_index..pointer2_index] {
                         paragraph_vector.push(line.to_string());
-                        // pointer1_index += 1;
                     }
                     pointer1_index = pointer2_index;
                     break
@@ -68,8 +67,22 @@ fn main() {
         pointer1_index += 1;
     }
 
-    for vector in all_paragraphs {
-        println!("{:?}", vector);
+    // Create a new vector to hold the formatted paragraphs
+    let mut paragraph_strings: Vec<String> = Vec::new();
+
+    // For each paragraph in the input vector
+    for paragraph in all_paragraphs {
+        // Add a tab indentation to start each paragraph
+        let mut base_string = String::new();
+        // Join the paragraph's sentences with a space
+        let sentences = paragraph.join(" ");
+        // Add the sentence onto the starting tab indentation
+        base_string.push_str(&sentences);
+        // Add the whole paragraph onto the paragraph vector
+        paragraph_strings.push(base_string);
     }
 
+    for paragraph in paragraph_strings {
+        println!("{:?}", paragraph);
+    }
 }
