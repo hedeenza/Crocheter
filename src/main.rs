@@ -1,6 +1,5 @@
 use clap::Parser;
-use crocheter::{read_file_to_vec, partition_skipped_lines, group_paragraphs, paragraph_vectors_to_strings, create_output_file};
-use std::io::Write;
+use crocheter::{read_file_to_vec, partition_skipped_lines, group_paragraphs, paragraph_vectors_to_strings, create_output_file, write_to_output};
 
 
 #[derive(Parser)]
@@ -30,22 +29,7 @@ fn main() {
 
     let paragraph_strings: Vec<String> = paragraph_vectors_to_strings(all_paragraphs);
 
-    let mut output_file = create_output_file(&args.input);
+    let output_file = create_output_file(&args.input);
 
-    // Write the skipped lines exactly as they were
-    for line in skipped_lines {
-        let _ = writeln!(output_file, "{}", line);
-    }
-
-    // Write a blank line between the skipped lines and the remaining
-    let _ = writeln!(output_file);
-
-    // Write the formatted paragraphs
-    for paragraph in paragraph_strings {
-        if args.tab_indentation {
-            let _ = writeln!(output_file, "\t{}\n", paragraph);
-        } else {
-            let _ = writeln!(output_file, "{}\n", paragraph);
-        }
-    }
+    write_to_output(args.tab_indentation, output_file, skipped_lines, paragraph_strings);
 }

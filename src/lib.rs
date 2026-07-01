@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::{BufRead, BufReader, Write};
 
 pub fn read_file_to_vec(input_file: &String) -> Vec<String> {
     // Create a vector to contain the original file contents
@@ -103,4 +103,23 @@ pub fn create_output_file(input_file: &String) -> File {
         File::create(output_name).expect("Failed to Create Output File");
 
     output_file
+}
+
+pub fn write_to_output(tab_indentation: bool, mut output_file: File, skipped_lines: Vec<String>, paragraph_strings: Vec<String>) {
+    // Write the skipped lines exactly as they were
+    for line in skipped_lines {
+        let _ = writeln!(output_file, "{}", line);
+    }
+
+    // Write a blank line between the skipped lines and the remaining
+    let _ = writeln!(output_file);
+
+    // Write the formatted paragraphs
+    for paragraph in paragraph_strings {
+        if tab_indentation {
+            let _ = writeln!(output_file, "\t{}\n", paragraph);
+        } else {
+            let _ = writeln!(output_file, "{}\n", paragraph);
+        }
+    }
 }
