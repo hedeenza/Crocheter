@@ -1,6 +1,6 @@
 use clap::Parser;
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::{BufRead, BufReader, Write};
 
 
 #[derive(Parser)]
@@ -82,7 +82,23 @@ fn main() {
         paragraph_strings.push(base_string);
     }
 
+    let input_file = args.input;
+    // Find the position of the period in the input file name, if there is one
+    let period_index = match input_file.find(".") {
+        Some(index) => index,
+        None => input_file.len(),
+    };
+    // The output name is everything up to the period index
+    let input_name = &input_file[..period_index];
+    // The output extension is everything after and including the period index
+    let input_extension = &input_file[period_index..];
+    // Format the output name to include the original file name
+    // and original extension if there was one
+    let output_name = format!("{}_publish{}", input_name, input_extension);
+    // Create the output file
+    let mut output_file =
+        File::create(output_name).expect("Failed to Create Output File");
     for paragraph in paragraph_strings {
-        println!("{:?}", paragraph);
+        let _ = writeln!(output_file, "{}\n", paragraph);
     }
 }
