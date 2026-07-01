@@ -13,6 +13,10 @@ struct Cli {
     /// Tab-indentation for paragraphs
     #[arg(short, long, default_value_t = false)]
     tab_indentation: bool,
+    
+    /// Number of lines to skip
+    #[arg(short, long, default_value_t = 0)]
+    skip_lines: usize,
 }
 
 fn main() {
@@ -39,8 +43,16 @@ fn main() {
     // Createa a new vector to hold the Vec<Tuple>
     let mut all_paragraphs: Vec<Vec<String>> = Vec::new();
 
+    // Creata a new vector to hold the lines we want to skip formatting
+    let mut skipped_lines: Vec<String> = Vec::new();
+
+    // Push each skipped line to the vector
+    for line in &mut input_lines[0..args.skip_lines] {
+        skipped_lines.push(line.to_string());
+    }
+
     // Set the initial Pointer 1 index to the beginning
-    let mut pointer1_index = 0;
+    let mut pointer1_index = args.skip_lines;
 
     // While the Pointer 1 index is less than the length of the content vector...
     while pointer1_index < input_lines.len() {
@@ -102,6 +114,16 @@ fn main() {
     // Create the output file
     let mut output_file =
         File::create(output_name).expect("Failed to Create Output File");
+
+    // Write the skipped lines exactly as they were
+    for line in skipped_lines {
+        let _ = writeln!(output_file, "{}", line);
+    }
+
+    // Write a blank line between the skipped lines and the remaining
+    let _ = writeln!(output_file);
+
+    // Write the formatted paragraphs
     for paragraph in paragraph_strings {
         if args.tab_indentation {
             let _ = writeln!(output_file, "\t{}\n", paragraph);
