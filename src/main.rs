@@ -1,6 +1,7 @@
 use clap::Parser;
+use crocheter::{read_file_to_vec};
 use std::fs::File;
-use std::io::{BufRead, BufReader, Write};
+use std::io::Write;
 
 
 #[derive(Parser)]
@@ -22,23 +23,7 @@ struct Cli {
 fn main() {
     let args = Cli::parse();
 
-    // Read in the input file
-    let file = File::open(&args.input);
-    let file_reader = match file {
-        Ok(file) => BufReader::new(file),
-        Err(err) => panic!("[ ERROR ]: {}", err),
-    };
-
-    // Create a vector to contain the original file contents
-    let mut input_lines: Vec<String> = Vec::new();
-
-    // Push each line to the vector
-    for line in file_reader.lines() {
-        match line {
-            Ok(line) => input_lines.push(line),
-            Err(err) => println!("[ ERROR ]: {}", err),
-        }
-    }
+    let mut input_lines = read_file_to_vec(&args.input);
 
     // Createa a new vector to hold the Vec<Tuple>
     let mut all_paragraphs: Vec<Vec<String>> = Vec::new();
