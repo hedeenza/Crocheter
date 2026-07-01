@@ -70,3 +70,17 @@ pub fn group_paragraphs(input_lines: Vec<String>, lines_skipped: usize) -> Vec<V
     }
     all_paragraphs
 }
+
+pub fn paragraph_vectors_to_strings(all_paragraphs: Vec<Vec<String>>) -> Vec<String> {
+    // Create a new vector to hold the formatted paragraphs
+    let mut paragraph_strings: Vec<String> = Vec::new();
+
+    // For each paragraph in the input vector
+    for paragraph in all_paragraphs {
+        // Join the paragraph's sentences with a space
+        let sentences = paragraph.join(" ");
+        // Add the whole paragraph onto the paragraph vector
+        paragraph_strings.push(sentences);
+    }
+    paragraph_strings
+}

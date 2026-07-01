@@ -1,5 +1,5 @@
 use clap::Parser;
-use crocheter::{read_file_to_vec, partition_skipped_lines, group_paragraphs};
+use crocheter::{read_file_to_vec, partition_skipped_lines, group_paragraphs, paragraph_vectors_to_strings};
 use std::fs::File;
 use std::io::Write;
 
@@ -29,20 +29,21 @@ fn main() {
     
     let all_paragraphs: Vec<Vec<String>> = group_paragraphs(input_lines.clone(), args.skip_lines);
 
-    // Create a new vector to hold the formatted paragraphs
-    let mut paragraph_strings: Vec<String> = Vec::new();
-
-    // For each paragraph in the input vector
-    for paragraph in all_paragraphs {
-        // Add a tab indentation to start each paragraph
-        let mut base_string = String::new();
-        // Join the paragraph's sentences with a space
-        let sentences = paragraph.join(" ");
-        // Add the sentence onto the starting tab indentation
-        base_string.push_str(&sentences);
-        // Add the whole paragraph onto the paragraph vector
-        paragraph_strings.push(base_string);
-    }
+    let paragraph_strings: Vec<String> = paragraph_vectors_to_strings(all_paragraphs);
+    // // Create a new vector to hold the formatted paragraphs
+    // let mut paragraph_strings: Vec<String> = Vec::new();
+    //
+    // // For each paragraph in the input vector
+    // for paragraph in all_paragraphs {
+    //     // Add a tab indentation to start each paragraph
+    //     let mut base_string = String::new();
+    //     // Join the paragraph's sentences with a space
+    //     let sentences = paragraph.join(" ");
+    //     // Add the sentence onto the starting tab indentation
+    //     base_string.push_str(&sentences);
+    //     // Add the whole paragraph onto the paragraph vector
+    //     paragraph_strings.push(base_string);
+    // }
 
     let input_file = args.input;
     // Find the position of the period in the input file name, if there is one
