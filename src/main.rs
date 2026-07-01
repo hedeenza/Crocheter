@@ -9,6 +9,10 @@ struct Cli {
     /// Input file
     #[arg(short, long)]
     input: String,
+    
+    /// Tab-indentation for paragraphs
+    #[arg(short, long, default_value_t = false)]
+    tab_indentation: bool,
 }
 
 fn main() {
@@ -99,6 +103,10 @@ fn main() {
     let mut output_file =
         File::create(output_name).expect("Failed to Create Output File");
     for paragraph in paragraph_strings {
-        let _ = writeln!(output_file, "{}\n", paragraph);
+        if args.tab_indentation {
+            let _ = writeln!(output_file, "\t{}\n", paragraph);
+        } else {
+            let _ = writeln!(output_file, "{}\n", paragraph);
+        }
     }
 }
