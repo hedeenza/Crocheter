@@ -1,3 +1,4 @@
+#![warn(clippy::pedantic)]
 use clap::Parser;
 use crocheter::{
     create_output_file, group_paragraphs, paragraph_vectors_to_strings, partition_skipped_lines,
@@ -28,10 +29,10 @@ fn main() {
     let input_lines: Vec<String> = read_file_to_vec(&args.input);
 
     // Partition any lines the user wants to skip into its own vector
-    let skipped_lines: Vec<String> = partition_skipped_lines(input_lines.clone(), args.skip_lines);
+    let skipped_lines: Vec<String> = partition_skipped_lines(&input_lines.clone(), args.skip_lines);
 
     // Group paragraphs by line breaks between content
-    let all_paragraphs: Vec<Vec<String>> = group_paragraphs(input_lines.clone(), args.skip_lines);
+    let all_paragraphs: Vec<Vec<String>> = group_paragraphs(&input_lines.clone(), args.skip_lines);
 
     // Collapse paragraphs down to one string each
     let paragraph_strings: Vec<String> = paragraph_vectors_to_strings(all_paragraphs);
